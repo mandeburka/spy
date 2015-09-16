@@ -11,7 +11,7 @@ class DistanceSpec extends FlatSpec with MockFactory with Matchers {
     Distance.nanosToDistance(0) should be (0)
   }
 
-  "2 second signal" should "be equal to sound speed" in {
+  "2 second signal" should "be equal to sound speed divided by 1s" in {
     Distance.nanosToDistance(2.second.toNanos) should be (Distance.SOUND_SPEED)
   }
 
@@ -23,6 +23,7 @@ class DistanceSpec extends FlatSpec with MockFactory with Matchers {
       val triggerPin: GpioPinDigitalOutput = triggerPinMock
       val echoPin: GpioPinDigitalInput = echoPinMock
     }
+
     inSequence {
       (triggerPinMock.high _).expects()
       (triggerPinMock.low _).expects()
