@@ -12,8 +12,6 @@ import com.pi4j.io.gpio.{GpioPinDigital, PinState, GpioPinDigitalInput, GpioPinD
  */
 trait Distance {
   final val TRIGGER_TIME = 10.micros
-  final val SOUND_SPEED = 340.29f
-  final val NANOS_IN_SECOND = 1000000000
 
   val triggerPin: GpioPinDigitalOutput
   val echoPin: GpioPinDigitalInput
@@ -29,16 +27,7 @@ trait Distance {
       start = System.nanoTime()
       _ <- waitFor(echoPin, PinState.LOW)
       end = System.nanoTime()
-    } yield nanosToDistance(end - start)
-  }
-
-  /**
-   * Converts time spent by sound wave to go to obstacle and return into distance to obstacle
-   * @param nanos time spent by sound wave to go to obstacle and return
-   * @return distance to obstacle
-   */
-  private def nanosToDistance(nanos: Long): Double = {
-    nanos * SOUND_SPEED / (2 * NANOS_IN_SECOND)
+    } yield Distance.nanosToDistance(end - start)
   }
 
   /**
@@ -65,5 +54,22 @@ trait Distance {
         Thread.sleep(0, 1)
       }
     }
+  }
+}
+
+object Distance {
+  /**
+   * Sound speed in meters per second
+   */
+  final val SOUND_SPEED = 340.29f
+  final val NANOS_IN_SECOND = 1000000000
+  /**
+   * Converts time spent by sound wave to go to obstacle and return into distance to obstacle
+   * @param nanos time spent by sound wave to go to obstacle and return
+   * @return distance to obstacle
+   */
+  def nanosToDistance(nanos: Long): Double = {
+    require(nanos >= 0)
+    nanos * SOUND_SPEED / (2 * NANOS_IN_SECOND)
   }
 }
