@@ -2,23 +2,19 @@ package org.kih6.spy.rrb2
 
 import com.pi4j.io.gpio.{PinState, GpioPinDigitalOutput}
 
+case class Speed(value: Int) {
+  require(value >= 0 && value <= 100)
+}
+
 /**
  * Control RaspiRobot Board v2 motors
  */
 trait Move {
-  type Direction = PinState
-
-  final val FORWARD: Direction = PinState.LOW
-  final val REVERSE: Direction = PinState.HIGH
-
+  import Move._
   val leftGoPin: PwmPin
   val leftDirectionPin: GpioPinDigitalOutput
   val rightGoPin: PwmPin
   val rightDirectionPin: GpioPinDigitalOutput
-
-  case class Speed(value: Int) {
-    require(value >= 0 && value <= 100)
-  }
 
   /**
    * Controls two robots motors
@@ -30,7 +26,7 @@ trait Move {
   def setMotors(leftSpeed: Speed, leftDir: Direction, rightSpeed: Speed, rightDir: Direction): Unit = {
     leftGoPin.setValue(leftSpeed.value)
     leftDirectionPin.setState(leftDir)
-    leftGoPin.setValue(rightSpeed.value)
+    rightGoPin.setValue(rightSpeed.value)
     rightDirectionPin.setState(rightDir)
   }
 
@@ -72,4 +68,11 @@ trait Move {
   def right(speed: Speed = Speed(50)): Unit = {
     setMotors(speed, REVERSE, speed, FORWARD)
   }
+}
+
+object Move {
+  type Direction = PinState
+
+  final val FORWARD: Direction = PinState.LOW
+  final val REVERSE: Direction = PinState.HIGH
 }

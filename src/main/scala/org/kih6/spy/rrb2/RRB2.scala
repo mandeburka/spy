@@ -23,9 +23,9 @@ class RRB2(private val gpio: GpioController) extends Move with Distance {
   final val TRIGGER_PIN = RaspiBcmPin.GPIO_18
   final val ECHO_PIN = RaspiBcmPin.GPIO_23
 
-  val leftGoPin = PwmPin(LEFT_GO_PIN.getAddress)
+  val leftGoPin = SoftwarePwmPin(LEFT_GO_PIN.getAddress)
   val leftDirectionPin = gpio.provisionDigitalOutputPin(LEFT_DIR_PIN)
-  val rightGoPin = PwmPin(RIGHT_GO_PIN.getAddress)
+  val rightGoPin = SoftwarePwmPin(RIGHT_GO_PIN.getAddress)
   val rightDirectionPin = gpio.provisionDigitalOutputPin(RIGHT_DIR_PIN)
 
   val led1Pin = gpio.provisionDigitalOutputPin(LED1_PIN)
