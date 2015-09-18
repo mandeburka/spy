@@ -8,7 +8,7 @@ import com.pi4j.wiringpi.Gpio
  * Rewritten from python original (see https://github.com/simonmonk/raspirobotboard2)
  * @param gpio gpio controller to use
  */
-class RRB2(private val gpio: GpioController) extends Move with Distance {
+class RRB2(private val gpio: GpioController) extends Robot {
 
   final val LEFT_GO_PIN = RaspiBcmPin.GPIO_17
   final val LEFT_DIR_PIN = RaspiBcmPin.GPIO_04
